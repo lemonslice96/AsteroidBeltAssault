@@ -18,13 +18,13 @@ namespace Asteroid_Belt_Assault
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
-        public Game1()
-        {
             enum GameStates { TitleScreen, Playing, PlayerDead, GameOver};
             GameStates gameState = GameStates.TitleScreen;
             Texture2D titleScreen;
             Texture2D spriteSheet;
+        public Game1()
+        {
+            
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
@@ -48,6 +48,8 @@ namespace Asteroid_Belt_Assault
         /// </summary>
         protected override void LoadContent()
         {
+            titleScreen = Content.Load<Texture2D>(@"Textures\TitleScreen");
+            spriteSheet = Content.Load<Texture2D>(@"Textures\spriteSheet");
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -70,6 +72,17 @@ namespace Asteroid_Belt_Assault
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            switch (gameState)
+            {
+                case GameStates.TitleScreen:
+                    break;
+                case GameStates.Playing:
+                    break;
+                case GameStates.PlayerDead:
+                    break;
+                case GameStates.GameOver:
+                    break;
+            }
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
@@ -90,6 +103,22 @@ namespace Asteroid_Belt_Assault
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
+            spriteBatch.Begin();
+            if (gameState == GameStates.TitleScreen)
+            {
+                spriteBatch.Draw(titleScreen,
+                new Rectangle(0, 0, this.Window.ClientBounds.Width,
+                this.Window.ClientBounds.Height),
+                Color.White);
+            }
+            if ((gameState == GameStates.Playing) || (gameState == GameStates.PlayerDead) ||
+            (gameState == GameStates.GameOver))
+            {
+            }
+            if ((gameState == GameStates.GameOver))
+            {
+            }
+            spriteBatch.End();
         }
     }
 }
