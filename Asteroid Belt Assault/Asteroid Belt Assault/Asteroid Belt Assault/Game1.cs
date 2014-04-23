@@ -19,9 +19,12 @@ namespace Asteroid_Belt_Assault
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
             enum GameStates { TitleScreen, Playing, PlayerDead, GameOver};
-            GameStates gameState = GameStates.TitleScreen;
+            
             Texture2D titleScreen;
             Texture2D spriteSheet;
+            StarField starField;
+            GameStates gameState = GameStates.Playing;
+
         public Game1()
         {
             
@@ -48,6 +51,13 @@ namespace Asteroid_Belt_Assault
         /// </summary>
         protected override void LoadContent()
         {
+            starField = new StarField(
+        this.Window.ClientBounds.Width,
+        this.Window.ClientBounds.Height,
+        200,
+        new Vector2(0, 30f),
+        spriteSheet,
+        new Rectangle(0, 450, 2, 2));
             titleScreen = Content.Load<Texture2D>(@"Textures\TitleScreen");
             spriteSheet = Content.Load<Texture2D>(@"Textures\spriteSheet");
             // Create a new SpriteBatch, which can be used to draw textures.
@@ -71,8 +81,9 @@ namespace Asteroid_Belt_Assault
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
-        {
-            switch (gameState)
+        {   
+            starField.Update(gameTime);
+            switch(gameState)
             {
                 case GameStates.TitleScreen:
                     break;
@@ -82,6 +93,7 @@ namespace Asteroid_Belt_Assault
                     break;
                 case GameStates.GameOver:
                     break;
+                    
             }
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
@@ -98,7 +110,7 @@ namespace Asteroid_Belt_Assault
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
 
@@ -114,6 +126,7 @@ namespace Asteroid_Belt_Assault
             if ((gameState == GameStates.Playing) || (gameState == GameStates.PlayerDead) ||
             (gameState == GameStates.GameOver))
             {
+                starField.Draw(spriteBatch);
             }
             if ((gameState == GameStates.GameOver))
             {
